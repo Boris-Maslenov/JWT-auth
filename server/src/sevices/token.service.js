@@ -5,7 +5,8 @@ const JWT_ACCESS_KEY = process.env.JWT_ACCESS_KEY;
 const JWT_REFRESH_KEY = process.env.JWT_REFRESH_KEY;
 
 class TokenService {
-    generateTokens(payload){
+    generateTokens({...payload}){
+        console.log(payload);
         const accessToken = jwt.sign(payload, JWT_ACCESS_KEY, {expiresIn: '30m'});
         const refreshToken = jwt.sign(payload, JWT_REFRESH_KEY, {expiresIn: '15d'});
         return {
@@ -13,6 +14,7 @@ class TokenService {
             refreshToken,
         }
     }
+
     async saveToken(userId, refreshToken){
         const tokenData = await TokenModel.findOne({user: userId});
         if(tokenData){
