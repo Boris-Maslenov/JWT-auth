@@ -7,6 +7,6 @@ const TokenSchema = new Schema({
 });
 
 // Model:
-const TokenModel = model('User', UserSchema);
+const TokenModel = model('Token', TokenSchema);
 
 module.exports = {TokenModel};
