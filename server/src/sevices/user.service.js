@@ -12,7 +12,7 @@ class UserService {
             throw new Error(`Пользователь с имейлом ${email} уже существует`)
         }
         const hashPassword = await bcrypt.hash(password, 3);
-        const activationLink = uuid.v4();
+        const activationLink = `https://localhost/api/activate/${uuid.v4()}`;
         // save user in DB:
         const user = await UserModel.create({email, password: hashPassword, activationLink});
         await mailService.sendActivationMail(email, activationLink); // без реализации
