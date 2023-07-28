@@ -33,7 +33,6 @@ class UserController {
         try {
             console.log('activate');
             const activationLink = req.params.link // router.get('/activate/:link',...)
-            console.log(activationLink)
             await userService.activate(activationLink);
             return res.redirect('http://localhost:3000'); //default react app port
         } catch(e) {
