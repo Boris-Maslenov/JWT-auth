@@ -1,10 +1,11 @@
-const UserService = require('../sevices/user.service');
+const userService = require('../sevices/user.service');
+// const UserService = require('../sevices/user.service');
 
 class UserController {
    async registration(req, res, next){
         try {
             const {email, password} = req.body;
-            const userData = await UserService.registration(email, password);
+            const userData = await userService.registration(email, password);
             // refresh будем хранить в httpOnly куках
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 15 * 24 * 60 * 60 * 1000, httpOnly: true})
             return res.json(userData);
@@ -28,8 +29,13 @@ class UserController {
         }
     } 
     async activate(req, res, next){
+       
         try {
-
+            console.log('activate');
+            const activationLink = req.params.link // router.get('/activate/:link',...)
+            console.log(activationLink)
+            await userService.activate(activationLink);
+            return res.redirect('https://ya.ru'); //default react app port
         } catch(e) {
             console.log(e);
         }

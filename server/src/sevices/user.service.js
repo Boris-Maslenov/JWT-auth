@@ -12,9 +12,10 @@ class UserService {
             throw new Error(`Пользователь с имейлом ${email} уже существует`)
         }
         const hashPassword = await bcrypt.hash(password, 3);
-        const activationLink = `https://localhost/api/activate/${uuid.v4()}`;
+        const activationCode = uuid.v4();
+        const activationLink = `http://localhost:5000/api/activate/${activationCode}`;
         // save user in DB:
-        const user = await UserModel.create({email, password: hashPassword, activationLink});
+        const user = await UserModel.create({email, password: hashPassword, activationLink:activationCode});
         await mailService.sendActivationMail(email, activationLink); // без реализации
         const userDto = new UserDto(user); // id, email, isActivated
         const tokens = tokenService.generateTokens(userDto);
@@ -25,6 +26,15 @@ class UserService {
             ...tokens,
             user: userDto,
         }
+    }
+    async activate(activationLink){
+        // find user by activationLink
+        const user = await UserModel.findOne({activationLink});
+        if(!user){
+            throw new Error('Некорректная ссылка активации пользователя')
+        }
+        user.isActivated = true;
+        await user.save();
     }
 }
 
