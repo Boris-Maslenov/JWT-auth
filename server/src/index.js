@@ -3,8 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
+const errorMiddleware = require('./middlewares/error.middleware');
 
-//
+// router
 const router = require('./router');
 
 // variables:
@@ -12,11 +13,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const DB_URL = process.env.DB_URL;
 
-// middlevares:
+// middlewares:
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 app.use('/api', router);
+app.use(errorMiddleware);
 
 // start server:
 const start = async () => {

@@ -10,22 +10,25 @@ class UserController {
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 15 * 24 * 60 * 60 * 1000, httpOnly: true})
             return res.json(userData);
         } catch(e) {
-            console.log(e.message)
-            return res.json(e.message);
+            //console.log(e.message)
+            //return res.json(e.message);
+            next(e);
         }
    } 
    async login(req, res, next){
         try {
 
         } catch(e) {
-            console.log(e);
+            //console.log(e);
+            next(e);
         }
     } 
     async logout(req, res, next){
         try {
 
         } catch(e) {
-            console.log(e);
+            // console.log(e);
+            next(e);
         }
     } 
     async activate(req, res, next){
@@ -35,21 +38,24 @@ class UserController {
             await userService.activate(activationLink);
             return res.redirect('http://localhost:3000'); //default react app port
         } catch(e) {
-            console.log(e);
+            //console.log(e);
+            next(e);
         }
     } 
     async refresh(req, res, next){
         try {
 
         } catch(e) {
-            console.log(e);
+            //console.log(e);
+            next(e);
         }
     } 
     async getUsers(req, res, next){
         try {
             res.json(['1', '2', '3']);
         } catch(e) {
-            console.log(e);
+           // console.log(e);
+           next(e);
         }
     } 
 }
